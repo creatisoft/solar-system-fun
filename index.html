@@ -80,7 +80,7 @@
                 // Scene setup
                 const scene = new THREE.Scene();
                 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-                const renderer = new THREE.WebGLRenderer();
+                const renderer = new THREE.WebGLRenderer({antialias:true});
                 renderer.setSize(window.innerWidth, window.innerHeight);
                 document.body.appendChild(renderer.domElement);
 
@@ -171,12 +171,12 @@
                         case 'KeyE': moveDown = true; break;       // E = down
                         case 'ShiftLeft': isSprinting = true; break;
                         case 'ArrowLeft':
-                            speedMultiplier = Math.max(0, speedMultiplier - 0.1);
-                            speedValue.textContent = speedMultiplier.toFixed(1);
+                            speedMultiplier = Math.max(0, speedMultiplier - 0.02); // Adjusted step to 0.02
+                            speedValue.textContent = speedMultiplier.toFixed(2); // Display two decimal places
                             break;
                         case 'ArrowRight':
-                            speedMultiplier = Math.min(1, speedMultiplier + 0.1);
-                            speedValue.textContent = speedMultiplier.toFixed(1);
+                            speedMultiplier = Math.min(0.5, speedMultiplier + 0.02); // Adjusted max to 0.5 and step to 0.02
+                            speedValue.textContent = speedMultiplier.toFixed(2); // Display two decimal places
                             break;
                     }
                 });
@@ -226,24 +226,67 @@
                 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
                 scene.add(sun);
 
-                // Create Planets
+                // Create Planets and Rings
                 const planetMeshes = [];
                 // Increase planet sizes by 8x and distances by 12x to prevent overlapping
                 planets.forEach(planet => {
                     const scaledRadius = planet.radius * 8;
                     const scaledDistance = planet.distance * 12; // More spacing to prevent overlap
+
+                    // Create orbital ring
+                    const ringGeometry = new THREE.RingGeometry(scaledDistance - 0.1, scaledDistance + 0.1, 64);
+                    const ringMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+                    const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                    ring.rotation.x = Math.PI / 2; // Rotate to lie flat
+                    scene.add(ring);
+
+                    // Create planet
                     const geometry = new THREE.SphereGeometry(scaledRadius, 32, 32);
                     const material = new THREE.MeshPhongMaterial({ color: planet.color });
                     const mesh = new THREE.Mesh(geometry, material);
                     mesh.position.x = scaledDistance;
                     scene.add(mesh);
+
+                    // Create planet name label
+                    const spriteMaterial = new THREE.SpriteMaterial({
+                        map: new THREE.CanvasTexture(createTextCanvas(planet.name, 'white', 'black')),
+                        transparent: true
+                    });
+                    const sprite = new THREE.Sprite(spriteMaterial);
+                    sprite.scale.set(10, 5, 1); // Adjust size of the label
+                    sprite.position.set(0, scaledRadius + 5, 0); // Position above the planet
+                    mesh.add(sprite);
+
                     planetMeshes.push({ 
                         mesh, 
+                        ring, 
+                        sprite, 
                         ...planet, 
                         scaledRadius, 
                         scaledDistance 
                     });
                 });
+
+                // Helper function to create text canvas
+                function createTextCanvas(text, textColor, backgroundColor) {
+                    const canvas = document.createElement('canvas');
+                    const context = canvas.getContext('2d');
+                    canvas.width = 256;
+                    canvas.height = 128;
+
+                    // Background
+                    context.fillStyle = backgroundColor;
+                    context.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // Text
+                    context.fillStyle = textColor;
+                    context.font = '24px Arial';
+                    context.textAlign = 'center';
+                    context.textBaseline = 'middle';
+                    context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+                    return canvas;
+                }
 
                 // Collision detection function
                 function checkCollisions(position, radius = 2) {
@@ -274,11 +317,14 @@
                     const delta = (time - prevTime) / 1000;
                     prevTime = time;
 
-                    // Update planet positions using scaled distances
+                    // Update planet positions and labels
                     planetMeshes.forEach(planet => {
                         const angle = time * planet.speed * speedMultiplier;
                         planet.mesh.position.x = planet.scaledDistance * Math.cos(angle);
                         planet.mesh.position.z = planet.scaledDistance * Math.sin(angle);
+
+                        // Update label position
+                        planet.sprite.position.set(0, planet.scaledRadius + 5, 0); // Keep label above the planet
                     });
 
                     // Update camera movement with proper 3D camera-relative movement
