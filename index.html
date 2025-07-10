@@ -194,11 +194,19 @@
                 });
 
                 // Lighting
-                const ambientLight = new THREE.AmbientLight(0x404040);
+                const ambientLight = new THREE.AmbientLight(0x404040, 2); // Increased intensity
                 scene.add(ambientLight);
-                const pointLight = new THREE.PointLight(0xffffff, 1, 1000);
-                pointLight.position.set(0, 0, 0);
-                scene.add(pointLight);
+
+                // Add a directional light to simulate sunlight
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+                directionalLight.position.set(0, 10, 0); // Position above the scene
+                directionalLight.castShadow = true;
+                scene.add(directionalLight);
+
+                // Make the sun emit light
+                const sunLight = new THREE.PointLight(0xffff00, 2, 1000); // Bright yellow light
+                sunLight.position.set(0, 0, 0); // Centered at the sun
+                scene.add(sunLight);
 
                 // Planets data
                 const planets = [
@@ -212,35 +220,43 @@
                     { name: 'Neptune', radius: 1.5, distance: 65, speed: 0.002, color: 0x000099 }
                 ];
 
-                // Create Sun
-                const sunGeometry = new THREE.SphereGeometry(5, 32, 32);
+                // Create Sun - scaled to match planet scaling
+                const sunGeometry = new THREE.SphereGeometry(40, 32, 32); // 8x larger than original
                 const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
                 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
                 scene.add(sun);
 
                 // Create Planets
                 const planetMeshes = [];
+                // Increase planet sizes by 8x and distances by 12x to prevent overlapping
                 planets.forEach(planet => {
-                    const geometry = new THREE.SphereGeometry(planet.radius, 32, 32);
+                    const scaledRadius = planet.radius * 8;
+                    const scaledDistance = planet.distance * 12; // More spacing to prevent overlap
+                    const geometry = new THREE.SphereGeometry(scaledRadius, 32, 32);
                     const material = new THREE.MeshPhongMaterial({ color: planet.color });
                     const mesh = new THREE.Mesh(geometry, material);
-                    mesh.position.x = planet.distance;
+                    mesh.position.x = scaledDistance;
                     scene.add(mesh);
-                    planetMeshes.push({ mesh, ...planet });
+                    planetMeshes.push({ 
+                        mesh, 
+                        ...planet, 
+                        scaledRadius, 
+                        scaledDistance 
+                    });
                 });
 
                 // Collision detection function
                 function checkCollisions(position, radius = 2) {
-                    // Check collision with sun
+                    // Check collision with sun (scaled)
                     const sunDistance = position.distanceTo(sun.position);
-                    if (sunDistance < 5 + radius) {
+                    if (sunDistance < 40 + radius) { // Updated sun radius
                         return true;
                     }
                     
-                    // Check collision with planets
+                    // Check collision with planets using scaled radii
                     for (let planet of planetMeshes) {
                         const planetDistance = position.distanceTo(planet.mesh.position);
-                        if (planetDistance < planet.radius + radius) {
+                        if (planetDistance < planet.scaledRadius + radius) {
                             return true;
                         }
                     }
@@ -258,16 +274,16 @@
                     const delta = (time - prevTime) / 1000;
                     prevTime = time;
 
-                    // Update planet positions
+                    // Update planet positions using scaled distances
                     planetMeshes.forEach(planet => {
                         const angle = time * planet.speed * speedMultiplier;
-                        planet.mesh.position.x = planet.distance * Math.cos(angle);
-                        planet.mesh.position.z = planet.distance * Math.sin(angle);
+                        planet.mesh.position.x = planet.scaledDistance * Math.cos(angle);
+                        planet.mesh.position.z = planet.scaledDistance * Math.sin(angle);
                     });
 
                     // Update camera movement with proper 3D camera-relative movement
                     // Adjust speed multiplier for sprinting
-                    const currentSpeed = speed * delta * (isSprinting ? 32 : 16);
+                    const currentSpeed = speed * delta * (isSprinting ? 128 : 64);
                     
                     // Get camera's world direction and right vector
                     const cameraDirection = new THREE.Vector3();
