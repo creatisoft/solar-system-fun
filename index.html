@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Simulation</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+        #controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #instructions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-family: Arial, sans-serif;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #lockMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-family: Arial, sans-serif;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+        #errorMessage {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: red;
+            font-family: Arial, sans-serif;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <span>Orbit Speed: <span id="speedValue">0.0</span></span>
+    </div>
+    <div id="instructions">
+        <p>Controls:</p>
+        <p>WASD: Move horizontally</p>
+        <p>Q/E: Move up/down</p>
+        <p>Mouse: Look around (click to lock)</p>
+        <p>Shift: Sprint</p>
+        <p>Esc: Unlock mouse</p>
+        <p>Left/Right Arrow: Adjust orbit speed</p>
+    </div>
+    <div id="lockMessage">Click to lock mouse and explore<br>(Requires HTTPS or localhost)</div>
+    <div id="errorMessage"></div>
+    <script type="module">
+        import * as THREE from 'three';
+        import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
+
+        const errorMessage = document.getElementById('errorMessage');
+
+        function startSimulation() {
+                // Scene setup
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                document.body.appendChild(renderer.domElement);
+
+                // FPS Controls
+                let controls;
+                const lockMessage = document.getElementById('lockMessage');
+                const isSecureContext = window.isSecureContext || location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+                const isPointerLockSupported = 'pointerLockElement' in document;
+
+                let moveForward = false, moveBackward = false, moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
+                let isSprinting = false;
+                const velocity = new THREE.Vector3();
+                const direction = new THREE.Vector3();
+                const speed = 50;
+
+                // Fallback camera controls
+                let isDragging = false;
+                let previousMousePosition = { x: 0, y: 0 };
+
+                if (isPointerLockSupported && isSecureContext) {
+                    try {
+                        controls = new PointerLockControls(camera, renderer.domElement);
+                        lockMessage.style.display = 'block';
+
+                        controls.addEventListener('lock', () => {
+                            lockMessage.style.display = 'none';
+                            controls.enabled = true;
+                        });
+
+                        controls.addEventListener('unlock', () => {
+                            lockMessage.style.display = 'block';
+                            controls.enabled = false;
+                        });
+
+                        document.addEventListener('click', () => {
+                            if (!controls.isLocked) {
+                                controls.lock();
+                            }
+                        });
+
+                        controls.addEventListener('error', (event) => {
+                            console.error('PointerLockControls error:', event);
+                            lockMessage.textContent = 'Failed to lock mouse. Try HTTPS or localhost.';
+                            lockMessage.style.display = 'block';
+                            setupFallbackControls();
+                        });
+                    } catch (error) {
+                        console.error('Failed to initialize PointerLockControls:', error);
+                        lockMessage.textContent = 'Pointer lock failed. Using fallback controls.';
+                        lockMessage.style.display = 'block';
+                        setupFallbackControls();
+                    }
+                } else {
+                    lockMessage.textContent = isPointerLockSupported
+                        ? 'Pointer Lock requires HTTPS or localhost'
+                        : 'Pointer Lock API not supported in this browser';
+                    lockMessage.style.display = 'block';
+                    setupFallbackControls();
+                }
+
+                function setupFallbackControls() {
+                    document.addEventListener('mousedown', () => (isDragging = true));
+                    document.addEventListener('mouseup', () => (isDragging = false));
+                    document.addEventListener('mousemove', (event) => {
+                        if (isDragging) {
+                            const deltaMove = {
+                                x: event.clientX - previousMousePosition.x,
+                                y: event.clientY - previousMousePosition.y
+                            };
+                            camera.rotation.y -= deltaMove.x * 0.002;
+                            camera.rotation.x -= deltaMove.y * 0.002;
+                            camera.rotation.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, camera.rotation.x));
+                        }
+                        previousMousePosition = { x: event.clientX, y: event.clientY };
+                    });
+                }
+
+                // Keyboard controls
+                let speedMultiplier = 0;
+                const speedValue = document.getElementById('speedValue');
+                document.addEventListener('keydown', (event) => {
+                    switch (event.code) {
+                        case 'KeyW': moveForward = true; break;   // W = forward
+                        case 'KeyS': moveBackward = true; break; // S = backward
+                        case 'KeyA': moveLeft = true; break;       // A = left
+                        case 'KeyD': moveRight = true; break;      // D = right
+                        case 'KeyQ': moveUp = true; break;         // Q = up
+                        case 'KeyE': moveDown = true; break;       // E = down
+                        case 'ShiftLeft': isSprinting = true; break;
+                        case 'ArrowLeft':
+                            speedMultiplier = Math.max(0, speedMultiplier - 0.1);
+                            speedValue.textContent = speedMultiplier.toFixed(1);
+                            break;
+                        case 'ArrowRight':
+                            speedMultiplier = Math.min(1, speedMultiplier + 0.1);
+                            speedValue.textContent = speedMultiplier.toFixed(1);
+                            break;
+                    }
+                });
+
+                document.addEventListener('keyup', (event) => {
+                    switch (event.code) {
+                        case 'KeyW': moveForward = false; break;
+                        case 'KeyS': moveBackward = false; break;
+                        case 'KeyA': moveLeft = false; break;
+                        case 'KeyD': moveRight = false; break;
+                        case 'KeyQ': moveUp = false; break;
+                        case 'KeyE': moveDown = false; break;
+                        case 'ShiftLeft': isSprinting = false; break;
+                    }
+                });
+
+                // Lighting
+                const ambientLight = new THREE.AmbientLight(0x404040);
+                scene.add(ambientLight);
+                const pointLight = new THREE.PointLight(0xffffff, 1, 1000);
+                pointLight.position.set(0, 0, 0);
+                scene.add(pointLight);
+
+                // Planets data
+                const planets = [
+                    { name: 'Mercury', radius: 0.5, distance: 10, speed: 0.02, color: 0xaaaaaa },
+                    { name: 'Venus', radius: 0.8, distance: 15, speed: 0.015, color: 0xffcc00 },
+                    { name: 'Earth', radius: 1, distance: 20, speed: 0.01, color: 0x0000ff },
+                    { name: 'Mars', radius: 0.7, distance: 25, speed: 0.008, color: 0xff0000 },
+                    { name: 'Jupiter', radius: 2, distance: 35, speed: 0.005, color: 0xffa500 },
+                    { name: 'Saturn', radius: 1.8, distance: 45, speed: 0.004, color: 0xffff99 },
+                    { name: 'Uranus', radius: 1.5, distance: 55, speed: 0.003, color: 0x00ffff },
+                    { name: 'Neptune', radius: 1.5, distance: 65, speed: 0.002, color: 0x000099 }
+                ];
+
+                // Create Sun
+                const sunGeometry = new THREE.SphereGeometry(5, 32, 32);
+                const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+                const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+                scene.add(sun);
+
+                // Create Planets
+                const planetMeshes = [];
+                planets.forEach(planet => {
+                    const geometry = new THREE.SphereGeometry(planet.radius, 32, 32);
+                    const material = new THREE.MeshPhongMaterial({ color: planet.color });
+                    const mesh = new THREE.Mesh(geometry, material);
+                    mesh.position.x = planet.distance;
+                    scene.add(mesh);
+                    planetMeshes.push({ mesh, ...planet });
+                });
+
+                // Collision detection function
+                function checkCollisions(position, radius = 2) {
+                    // Check collision with sun
+                    const sunDistance = position.distanceTo(sun.position);
+                    if (sunDistance < 5 + radius) {
+                        return true;
+                    }
+                    
+                    // Check collision with planets
+                    for (let planet of planetMeshes) {
+                        const planetDistance = position.distanceTo(planet.mesh.position);
+                        if (planetDistance < planet.radius + radius) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+
+                // Camera initial position
+                camera.position.set(0, 10, 100);
+
+                // Animation loop
+                let prevTime = performance.now();
+                function animate() {
+                    requestAnimationFrame(animate);
+                    const time = performance.now();
+                    const delta = (time - prevTime) / 1000;
+                    prevTime = time;
+
+                    // Update planet positions
+                    planetMeshes.forEach(planet => {
+                        const angle = time * planet.speed * speedMultiplier;
+                        planet.mesh.position.x = planet.distance * Math.cos(angle);
+                        planet.mesh.position.z = planet.distance * Math.sin(angle);
+                    });
+
+                    // Update camera movement with proper 3D camera-relative movement
+                    // Adjust speed multiplier for sprinting
+                    const currentSpeed = speed * delta * (isSprinting ? 32 : 16);
+                    
+                    // Get camera's world direction and right vector
+                    const cameraDirection = new THREE.Vector3();
+                    const cameraRight = new THREE.Vector3();
+                    const cameraUp = new THREE.Vector3(0, 1, 0); // World up
+                    
+                    camera.getWorldDirection(cameraDirection);
+                    cameraRight.crossVectors(cameraDirection, cameraUp).normalize();
+                    
+                    // Reset velocity for this frame
+                    velocity.set(0, 0, 0);
+                    
+                    // Forward/backward movement (W/S) - move in camera direction
+                    if (moveForward) {
+                        velocity.add(cameraDirection.clone().multiplyScalar(currentSpeed));
+                    }
+                    if (moveBackward) {
+                        velocity.add(cameraDirection.clone().multiplyScalar(-currentSpeed));
+                    }
+                    
+                    // Left/right movement (A/D) - move perpendicular to camera direction
+                    if (moveLeft) {
+                        velocity.add(cameraRight.clone().multiplyScalar(-currentSpeed));
+                    }
+                    if (moveRight) {
+                        velocity.add(cameraRight.clone().multiplyScalar(currentSpeed));
+                    }
+                    
+                    // Up/down movement (Q/E) - move in world Y direction
+                    if (moveUp) {
+                        velocity.y += currentSpeed;
+                    }
+                    if (moveDown) {
+                        velocity.y -= currentSpeed;
+                    }
+
+                    if (isPointerLockSupported && isSecureContext && controls && controls.isLocked) {
+                        // Test new position for collision
+                        const testPosition = controls.getObject().position.clone();
+                        testPosition.add(velocity.clone().multiplyScalar(delta));
+                        
+                        if (!checkCollisions(testPosition)) {
+                            controls.getObject().position.add(velocity.clone().multiplyScalar(delta));
+                        }
+                    } else {
+                        // Test new position for collision (fallback controls)
+                        const testPosition = camera.position.clone();
+                        testPosition.add(velocity.clone().multiplyScalar(delta));
+                        
+                        if (!checkCollisions(testPosition)) {
+                            camera.position.add(velocity.clone().multiplyScalar(delta));
+                        }
+                    }
+
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                });
+            }
+        // Start the simulation immediately
+        startSimulation();
+    </script>
+</body>
+</html>
