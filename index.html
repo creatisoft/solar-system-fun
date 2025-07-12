@@ -171,11 +171,11 @@
                         case 'KeyE': moveDown = true; break;       // E = down
                         case 'ShiftLeft': isSprinting = true; break;
                         case 'ArrowLeft':
-                            speedMultiplier = Math.max(0, speedMultiplier - 0.01);
+                            speedMultiplier = Math.max(0, speedMultiplier - 0.5); // Step: 0.5
                             speedValue.textContent = speedMultiplier.toFixed(2); // Display two decimal places
                             break;
                         case 'ArrowRight':
-                            speedMultiplier = Math.min(0.11, speedMultiplier + 0.01); // Changed max to 0.11
+                            speedMultiplier = Math.min(5, speedMultiplier + 0.5); // Changed max to 5, step: 0.5
                             speedValue.textContent = speedMultiplier.toFixed(2); // Display two decimal places
                             break;
                     }
@@ -450,6 +450,9 @@
                 // Camera initial position
                 camera.position.set(0, 10, 100);
 
+                // Store current angles for planets and moons
+                const planetAngles = new Map();
+                
                 // Animation loop
                 let prevTime = performance.now();
                 function animate() {
@@ -460,9 +463,21 @@
 
                     // Update planet positions and labels
                     planetMeshes.forEach(planet => {
-                        const angle = time * planet.speed * speedMultiplier;
-                        planet.mesh.position.x = planet.scaledDistance * Math.cos(angle);
-                        planet.mesh.position.z = planet.scaledDistance * Math.sin(angle);
+                        // Initialize angle if not exists
+                        if (!planetAngles.has(planet.mesh.uuid)) {
+                            planetAngles.set(planet.mesh.uuid, {
+                                planet: 0,
+                                moons: new Map()
+                            });
+                        }
+                        
+                        // Get current angles and update them
+                        const angles = planetAngles.get(planet.mesh.uuid);
+                        angles.planet += planet.speed * speedMultiplier * delta * 60; // Multiply by 60 to maintain similar speed scale
+                        
+                        // Update planet position based on current angle
+                        planet.mesh.position.x = planet.scaledDistance * Math.cos(angles.planet);
+                        planet.mesh.position.z = planet.scaledDistance * Math.sin(angles.planet);
 
                         // Update label position
                         planet.sprite.position.set(0, planet.scaledRadius + 5, 0); // Keep label above the planet
@@ -470,7 +485,16 @@
                         // Animate moons if they exist
                         if (planet.mesh.moons) {
                             planet.mesh.moons.forEach(moon => {
-                                const moonAngle = time * moon.speed * speedMultiplier;
+                                // Initialize moon angle if not exists
+                                if (!angles.moons.has(moon.mesh.uuid)) {
+                                    angles.moons.set(moon.mesh.uuid, 0);
+                                }
+                                
+                                // Update moon angle
+                                const moonAngle = angles.moons.get(moon.mesh.uuid);
+                                angles.moons.set(moon.mesh.uuid, moonAngle + moon.speed * speedMultiplier * delta * 60);
+                                
+                                // Update moon position
                                 moon.mesh.position.x = moon.distance * Math.cos(moonAngle);
                                 moon.mesh.position.z = moon.distance * Math.sin(moonAngle);
                             });
