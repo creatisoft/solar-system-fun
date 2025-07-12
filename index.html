@@ -11,21 +11,43 @@
             position: absolute;
             top: 10px;
             left: 10px;
-            color: white;
-            font-family: Arial, sans-serif;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 5px;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(50, 50, 50, 0.95));
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
         }
         #instructions {
             position: absolute;
             top: 10px;
             right: 10px;
-            color: white;
-            font-family: Arial, sans-serif;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 5px;
+            color: #ffffff;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.95), rgba(50, 50, 50, 0.95));
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            min-width: 220px;
+        }
+        .control-section {
+            margin-bottom: 15px;
+        }
+        .control-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #ffd700;
+        }
+        .control-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00ff88;
         }
         #lockMessage {
             position: absolute;
@@ -57,16 +79,19 @@
 </head>
 <body>
     <div id="controls">
-        <span>Orbit Speed: <span id="speedValue">0.0</span></span>
+        <div class="control-section">
+            <div class="control-title">Orbital Speed</div>
+            <div class="control-value"><span id="speedValue">0.00</span></div>
+        </div>
     </div>
     <div id="instructions">
-        <p>Controls:</p>
-        <p>WASD: Move horizontally</p>
-        <p>Q/E: Move up/down</p>
-        <p>Mouse: Look around (click to lock)</p>
-        <p>Shift: Sprint</p>
-        <p>Esc: Unlock mouse</p>
-        <p>Left/Right Arrow: Adjust orbit speed</p>
+        <div class="control-title">Controls</div>
+        <p><strong>WASD:</strong> Move horizontally</p>
+        <p><strong>Q/E:</strong> Move up/down</p>
+        <p><strong>Mouse:</strong> Look around (click to lock)</p>
+        <p><strong>Shift:</strong> Sprint</p>
+        <p><strong>Esc:</strong> Unlock mouse</p>
+        <p><strong>←/→:</strong> Adjust orbit speed</p>
     </div>
     <div id="lockMessage">Click to lock mouse and explore<br>(Requires HTTPS or localhost)</div>
     <div id="errorMessage"></div>
