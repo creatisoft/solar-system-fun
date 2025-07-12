@@ -49,31 +49,7 @@
             font-weight: bold;
             color: #00ff88;
         }
-        #raycastSlider {
-            width: 100%;
-            margin-top: 10px;
-            background: #444;
-            height: 4px;
-            border-radius: 2px;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        #raycastSlider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #00ff88;
-            cursor: pointer;
-        }
-        #raycastSlider::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background: #00ff88;
-            cursor: pointer;
-        }
+
         #lockMessage {
             position: absolute;
             top: 50%;
@@ -136,11 +112,7 @@
             <div class="control-title">Orbital Speed</div>
             <div class="control-value"><span id="speedValue">0.00</span></div>
         </div>
-        <div class="control-section">
-            <div class="control-title">Raycast Distance</div>
-            <div class="control-value"><span id="raycastValue">25</span></div>
-            <input type="range" id="raycastSlider" min="10" max="100" value="25" step="5">
-        </div>
+
     </div>
     <div id="instructions">
         <div class="control-title">Controls</div>
@@ -249,19 +221,12 @@
                 // Keyboard controls
                 let speedMultiplier = 0;
                 const speedValue = document.getElementById('speedValue');
-                const raycastSlider = document.getElementById('raycastSlider');
-                const raycastValue = document.getElementById('raycastValue');
+                // ...existing code...
                 
                 // Raycaster setup
                 const raycaster = new THREE.Raycaster();
                 const center = new THREE.Vector2(0, 0); // Center of screen for raycasting
-                let raycastDistance = 50; // Default raycast distance
-
-                // Update raycast distance when slider changes
-                raycastSlider.addEventListener('input', (event) => {
-                    raycastDistance = parseInt(event.target.value);
-                    raycastValue.textContent = raycastDistance;
-                });
+                let raycastDistance = 50; // Default raycast distance (fixed)
 
                 document.addEventListener('keydown', (event) => {
                     switch (event.code) {
