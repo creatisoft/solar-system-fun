@@ -171,11 +171,11 @@
                         case 'KeyE': moveDown = true; break;       // E = down
                         case 'ShiftLeft': isSprinting = true; break;
                         case 'ArrowLeft':
-                            speedMultiplier = Math.max(0, speedMultiplier - 0.02); // Adjusted step to 0.02
+                            speedMultiplier = Math.max(0, speedMultiplier - 0.01);
                             speedValue.textContent = speedMultiplier.toFixed(2); // Display two decimal places
                             break;
                         case 'ArrowRight':
-                            speedMultiplier = Math.min(0.5, speedMultiplier + 0.02); // Adjusted max to 0.5 and step to 0.02
+                            speedMultiplier = Math.min(0.11, speedMultiplier + 0.01); // Changed max to 0.11
                             speedValue.textContent = speedMultiplier.toFixed(2); // Display two decimal places
                             break;
                     }
@@ -208,16 +208,86 @@
                 sunLight.position.set(0, 0, 0); // Centered at the sun
                 scene.add(sunLight);
 
-                // Planets data
+                // Planets data with moons and rings
                 const planets = [
                     { name: 'Mercury', radius: 0.5, distance: 10, speed: 0.02, color: 0xaaaaaa },
                     { name: 'Venus', radius: 0.8, distance: 15, speed: 0.015, color: 0xffcc00 },
-                    { name: 'Earth', radius: 1, distance: 20, speed: 0.01, color: 0x0000ff },
-                    { name: 'Mars', radius: 0.7, distance: 25, speed: 0.008, color: 0xff0000 },
-                    { name: 'Jupiter', radius: 2, distance: 35, speed: 0.005, color: 0xffa500 },
-                    { name: 'Saturn', radius: 1.8, distance: 45, speed: 0.004, color: 0xffff99 },
-                    { name: 'Uranus', radius: 1.5, distance: 55, speed: 0.003, color: 0x00ffff },
-                    { name: 'Neptune', radius: 1.5, distance: 65, speed: 0.002, color: 0x000099 }
+                    { 
+                        name: 'Earth', 
+                        radius: 1, 
+                        distance: 20, 
+                        speed: 0.01, 
+                        color: 0x0000ff,
+                        moons: [
+                            { name: 'Moon', radius: 0.27, distance: 3, speed: 0.03, color: 0xcccccc }
+                        ]
+                    },
+                    { 
+                        name: 'Mars', 
+                        radius: 0.7, 
+                        distance: 25, 
+                        speed: 0.008, 
+                        color: 0xff0000,
+                        moons: [
+                            { name: 'Phobos', radius: 0.1, distance: 2, speed: 0.04, color: 0x888888 },
+                            { name: 'Deimos', radius: 0.08, distance: 2.5, speed: 0.03, color: 0x888888 }
+                        ]
+                    },
+                    { 
+                        name: 'Jupiter', 
+                        radius: 2, 
+                        distance: 35, 
+                        speed: 0.005, 
+                        color: 0xffa500,
+                        moons: [
+                            { name: 'Io', radius: 0.2, distance: 4, speed: 0.04, color: 0xffff00 },
+                            { name: 'Europa', radius: 0.18, distance: 4.5, speed: 0.035, color: 0xffffff },
+                            { name: 'Ganymede', radius: 0.25, distance: 5, speed: 0.03, color: 0xaaaaaa },
+                            { name: 'Callisto', radius: 0.23, distance: 5.5, speed: 0.025, color: 0x888888 }
+                        ]
+                    },
+                    { 
+                        name: 'Saturn', 
+                        radius: 1.8, 
+                        distance: 45, 
+                        speed: 0.004, 
+                        color: 0xffff99,
+                        rings: [
+                            { innerRadius: 2.2, outerRadius: 3.5, color: 0xffff99 },
+                            { innerRadius: 3.7, outerRadius: 4.5, color: 0xffaa66 }
+                        ],
+                        moons: [
+                            { name: 'Titan', radius: 0.3, distance: 6, speed: 0.03, color: 0xffaa00 },
+                            { name: 'Rhea', radius: 0.15, distance: 5, speed: 0.035, color: 0xcccccc }
+                        ]
+                    },
+                    { 
+                        name: 'Uranus', 
+                        radius: 1.5, 
+                        distance: 55, 
+                        speed: 0.003, 
+                        color: 0x00ffff,
+                        rings: [
+                            { innerRadius: 1.8, outerRadius: 2.5, color: 0x00ffff }
+                        ],
+                        moons: [
+                            { name: 'Titania', radius: 0.2, distance: 4, speed: 0.03, color: 0xcccccc },
+                            { name: 'Oberon', radius: 0.19, distance: 4.5, speed: 0.025, color: 0xaaaaaa }
+                        ]
+                    },
+                    { 
+                        name: 'Neptune', 
+                        radius: 1.5, 
+                        distance: 65, 
+                        speed: 0.002, 
+                        color: 0x000099,
+                        rings: [
+                            { innerRadius: 1.8, outerRadius: 2.2, color: 0x000099 }
+                        ],
+                        moons: [
+                            { name: 'Triton', radius: 0.22, distance: 4, speed: -0.03, color: 0xcccccc }
+                        ]
+                    }
                 ];
 
                 // Create Sun - scaled to match planet scaling
@@ -256,6 +326,77 @@
                     sprite.scale.set(10, 5, 1); // Adjust size of the label
                     sprite.position.set(0, scaledRadius + 5, 0); // Position above the planet
                     mesh.add(sprite);
+
+                    // Create planet's rings if they exist
+                    if (planet.rings) {
+                        const planetRings = [];
+                        planet.rings.forEach(ringData => {
+                            const ringGeometry = new THREE.RingGeometry(
+                                ringData.innerRadius * 8,  // Scale ring radius
+                                ringData.outerRadius * 8,
+                                64
+                            );
+                            const ringMaterial = new THREE.MeshBasicMaterial({
+                                color: ringData.color,
+                                side: THREE.DoubleSide,
+                                transparent: true,
+                                opacity: 0.8
+                            });
+                            const ringMesh = new THREE.Mesh(ringGeometry, ringMaterial);
+                            ringMesh.rotation.x = Math.PI / 2;  // Lay flat
+                            mesh.add(ringMesh);
+                            planetRings.push(ringMesh);
+                        });
+                        mesh.rings = planetRings;
+                    }
+
+                    // Create moons if they exist
+                    if (planet.moons) {
+                        const moonMeshes = [];
+                        planet.moons.forEach(moon => {
+                            const scaledMoonRadius = moon.radius * 8;
+                            const scaledMoonDistance = moon.distance * 8;
+
+                            const moonGeometry = new THREE.SphereGeometry(scaledMoonRadius, 32, 32);
+                            const moonMaterial = new THREE.MeshPhongMaterial({ color: moon.color });
+                            const moonMesh = new THREE.Mesh(moonGeometry, moonMaterial);
+                            
+                            // Create moon's orbit ring
+                            const moonOrbitGeometry = new THREE.RingGeometry(
+                                scaledMoonDistance - 0.1,
+                                scaledMoonDistance + 0.1,
+                                32
+                            );
+                            const moonOrbitMaterial = new THREE.MeshBasicMaterial({
+                                color: 0xffffff,
+                                side: THREE.DoubleSide,
+                                transparent: true,
+                                opacity: 0.3
+                            });
+                            const moonOrbit = new THREE.Mesh(moonOrbitGeometry, moonOrbitMaterial);
+                            moonOrbit.rotation.x = Math.PI / 2;
+                            mesh.add(moonOrbit);
+
+                            // Create moon name label
+                            const moonSpriteMaterial = new THREE.SpriteMaterial({
+                                map: new THREE.CanvasTexture(createTextCanvas(moon.name, 'white', 'black')),
+                                transparent: true
+                            });
+                            const moonSprite = new THREE.Sprite(moonSpriteMaterial);
+                            moonSprite.scale.set(5, 2.5, 1);  // Half the size of planet labels
+                            moonSprite.position.set(0, scaledMoonRadius + 2, 0);
+                            moonMesh.add(moonSprite);
+
+                            mesh.add(moonMesh);
+                            moonMeshes.push({
+                                mesh: moonMesh,
+                                speed: moon.speed,
+                                distance: scaledMoonDistance,
+                                sprite: moonSprite
+                            });
+                        });
+                        mesh.moons = moonMeshes;
+                    }
 
                     planetMeshes.push({ 
                         mesh, 
@@ -325,6 +466,15 @@
 
                         // Update label position
                         planet.sprite.position.set(0, planet.scaledRadius + 5, 0); // Keep label above the planet
+
+                        // Animate moons if they exist
+                        if (planet.mesh.moons) {
+                            planet.mesh.moons.forEach(moon => {
+                                const moonAngle = time * moon.speed * speedMultiplier;
+                                moon.mesh.position.x = moon.distance * Math.cos(moonAngle);
+                                moon.mesh.position.z = moon.distance * Math.sin(moonAngle);
+                            });
+                        }
                     });
 
                     // Update camera movement with proper 3D camera-relative movement
