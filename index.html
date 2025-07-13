@@ -239,11 +239,11 @@
                         case 'KeyE': moveDown = true; break;       // E = down
                         case 'ShiftLeft': isSprinting = true; break;
                         case 'ArrowLeft':
-                            speedMultiplier = Math.max(0, speedMultiplier - 0.5); // Step: 0.5
+                            speedMultiplier = Math.max(0, speedMultiplier - 0.2); // Step: 0.5
                             speedValue.textContent = speedMultiplier.toFixed(2); // Display two decimal places
                             break;
                         case 'ArrowRight':
-                            speedMultiplier = Math.min(5, speedMultiplier + 0.5); // Changed max to 5, step: 0.5
+                            speedMultiplier = Math.min(5, speedMultiplier + 0.2); // Changed max to 5, step: 0.5
                             speedValue.textContent = speedMultiplier.toFixed(2); // Display two decimal places
                             break;
                     }
