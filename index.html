@@ -182,6 +182,40 @@
             font-size: 14px;
             color: #aaa;
         }
+        
+        /* Donate Button */
+        #donateButton {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #8B5CF6, #A855F7);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        
+        #donateButton:hover {
+            background: linear-gradient(135deg, #7C3AED, #9333EA);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        #donateButton:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -207,6 +241,11 @@
         <div class="crosshair-line crosshair-horizontal"></div>
         <div class="crosshair-line crosshair-vertical"></div>
     </div>
+    
+    <!-- Donate Button -->
+    <a id="donateButton" href="" target="_blank">
+        💜 Donate
+    </a>
     
     <!-- Planet Info Modal -->
     <div id="planetModal">
@@ -539,6 +578,17 @@
                 const sunGeometry = new THREE.SphereGeometry(40, 32, 32); // 8x larger than original
                 const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
                 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+                
+                // Create Sun name label
+                const sunSpriteMaterial = new THREE.SpriteMaterial({
+                    map: new THREE.CanvasTexture(createTextCanvas('Sun', 'white', 'black')),
+                    transparent: true
+                });
+                const sunSprite = new THREE.Sprite(sunSpriteMaterial);
+                sunSprite.scale.set(20, 10, 1); // Larger than planet labels since the sun is bigger
+                sunSprite.position.set(0, 45, 0); // Position above the sun (40 radius + 5 margin)
+                sun.add(sunSprite);
+                
                 scene.add(sun);
 
                 // Create Planets and Rings
