@@ -1,0 +1,170 @@
+{
+  "Mercury": {
+    "name": "Mercury",
+    "distanceFromEarth": "77.3 million km (average)",
+    "temperature": "-173°C to 427°C",
+    "gravity": "0.38x Earth's gravity",
+    "type": "Terrestrial Planet",
+    "funFact": "Mercury has no atmosphere and experiences the most extreme temperature swings in the solar system - from freezing cold to hot enough to melt lead!"
+  },
+  "Venus": {
+    "name": "Venus",
+    "distanceFromEarth": "41.4 million km (average)",
+    "temperature": "462°C (surface)",
+    "gravity": "0.91x Earth's gravity",
+    "type": "Terrestrial Planet",
+    "funFact": "Venus rotates backwards compared to most planets and has days longer than its years - one day on Venus equals 243 Earth days!"
+  },
+  "Earth": {
+    "name": "Earth",
+    "distanceFromEarth": "0 km (You are here!)",
+    "temperature": "-89°C to 58°C",
+    "gravity": "1.0x Earth's gravity",
+    "type": "Terrestrial Planet",
+    "funFact": "Earth is the only known planet with liquid water on its surface and the only place in the universe confirmed to harbor life!"
+  },
+  "Mars": {
+    "name": "Mars",
+    "distanceFromEarth": "78.3 million km (average)",
+    "temperature": "-87°C to -5°C",
+    "gravity": "0.38x Earth's gravity",
+    "type": "Terrestrial Planet",
+    "funFact": "Mars has the largest volcano in the solar system - Olympus Mons is three times taller than Mount Everest and as wide as Arizona!"
+  },
+  "Jupiter": {
+    "name": "Jupiter",
+    "distanceFromEarth": "628.7 million km (average)",
+    "temperature": "-108°C (cloud tops)",
+    "gravity": "2.36x Earth's gravity",
+    "type": "Gas Giant",
+    "funFact": "Jupiter's Great Red Spot is a storm that has been raging for over 400 years and is large enough to fit three Earths inside it!"
+  },
+  "Saturn": {
+    "name": "Saturn",
+    "distanceFromEarth": "1.35 billion km (average)",
+    "temperature": "-139°C (cloud tops)",
+    "gravity": "0.92x Earth's gravity",
+    "type": "Gas Giant",
+    "funFact": "Saturn is less dense than water - if you could find a bathtub big enough, Saturn would actually float!"
+  },
+  "Uranus": {
+    "name": "Uranus",
+    "distanceFromEarth": "2.72 billion km (average)",
+    "temperature": "-197°C (cloud tops)",
+    "gravity": "0.89x Earth's gravity",
+    "type": "Ice Giant",
+    "funFact": "Uranus rotates on its side at a 98-degree angle, likely due to a massive collision billions of years ago - it literally rolls around the Sun!"
+  },
+  "Neptune": {
+    "name": "Neptune",
+    "distanceFromEarth": "4.35 billion km (average)",
+    "temperature": "-201°C (cloud tops)",
+    "gravity": "1.13x Earth's gravity",
+    "type": "Ice Giant",
+    "funFact": "Neptune has winds reaching up to 2,100 km/h - the fastest in the solar system, despite being the farthest planet from the Sun!"
+  },
+  "Sun": {
+    "name": "The Sun",
+    "distanceFromEarth": "149.6 million km",
+    "temperature": "5,778°C (surface), 15 million°C (core)",
+    "gravity": "28x Earth's gravity",
+    "type": "Main Sequence Star",
+    "funFact": "The Sun is so massive that it contains 99.86% of all the mass in our solar system, and every second it converts 4 million tons of matter into energy!"
+  },
+  "Moon": {
+    "name": "The Moon",
+    "distanceFromEarth": "384,400 km",
+    "temperature": "-173°C to 127°C",
+    "gravity": "0.165x Earth's gravity",
+    "type": "Terrestrial Moon",
+    "funFact": "The Moon always shows the same face to Earth due to tidal locking, and it's slowly moving away from us at about 3.8 cm per year!"
+  },
+  "Phobos": {
+    "name": "Phobos",
+    "distanceFromEarth": "78.3 million km (orbits Mars)",
+    "temperature": "-4°C to -112°C",
+    "gravity": "0.0006x Earth's gravity",
+    "type": "Rocky Asteroid Moon",
+    "funFact": "Phobos orbits Mars so fast that it rises in the west and sets in the east, completing three orbits in a single Martian day!"
+  },
+  "Deimos": {
+    "name": "Deimos",
+    "distanceFromEarth": "78.3 million km (orbits Mars)",
+    "temperature": "-4°C to -112°C",
+    "gravity": "0.0003x Earth's gravity",
+    "type": "Rocky Asteroid Moon",
+    "funFact": "Deimos is so small and irregularly shaped that if you stood on it, you could literally throw a baseball into orbit around it!"
+  },
+  "Io": {
+    "name": "Io",
+    "distanceFromEarth": "628.7 million km (orbits Jupiter)",
+    "temperature": "-143°C to 1,800°C",
+    "gravity": "0.18x Earth's gravity",
+    "type": "Volcanic Moon",
+    "funFact": "Io is the most volcanically active body in the solar system, with over 400 active volcanoes that can shoot sulfur 500 km into space!"
+  },
+  "Europa": {
+    "name": "Europa",
+    "distanceFromEarth": "628.7 million km (orbits Jupiter)",
+    "temperature": "-160°C to -220°C",
+    "gravity": "0.134x Earth's gravity",
+    "type": "Icy Moon",
+    "funFact": "Europa has a subsurface ocean that contains twice as much water as all of Earth's oceans combined, hidden beneath its icy crust!"
+  },
+  "Ganymede": {
+    "name": "Ganymede",
+    "distanceFromEarth": "628.7 million km (orbits Jupiter)",
+    "temperature": "-180°C to -120°C",
+    "gravity": "0.146x Earth's gravity",
+    "type": "Icy Moon",
+    "funFact": "Ganymede is the largest moon in the solar system - bigger than Mercury - and has its own magnetic field and aurora!"
+  },
+  "Callisto": {
+    "name": "Callisto",
+    "distanceFromEarth": "628.7 million km (orbits Jupiter)",
+    "temperature": "-139°C to -108°C",
+    "gravity": "0.126x Earth's gravity",
+    "type": "Icy Moon",
+    "funFact": "Callisto is the most heavily cratered object in the solar system and may have a subsurface ocean beneath its ancient, battered surface!"
+  },
+  "Titan": {
+    "name": "Titan",
+    "distanceFromEarth": "1.35 billion km (orbits Saturn)",
+    "temperature": "-179°C to -170°C",
+    "gravity": "0.14x Earth's gravity",
+    "type": "Atmospheric Moon",
+    "funFact": "Titan has lakes and rivers of liquid methane and ethane, and its thick atmosphere would let you fly with just wings strapped to your arms!"
+  },
+  "Rhea": {
+    "name": "Rhea",
+    "distanceFromEarth": "1.35 billion km (orbits Saturn)",
+    "temperature": "-174°C to -220°C",
+    "gravity": "0.0264x Earth's gravity",
+    "type": "Icy Moon",
+    "funFact": "Rhea may have its own ring system, making it potentially the first moon known to have rings around it!"
+  },
+  "Titania": {
+    "name": "Titania",
+    "distanceFromEarth": "2.72 billion km (orbits Uranus)",
+    "temperature": "-203°C to -213°C",
+    "gravity": "0.039x Earth's gravity",
+    "type": "Icy Moon",
+    "funFact": "Titania is the largest moon of Uranus and has massive canyon systems that stretch for over 1,000 km across its surface!"
+  },
+  "Oberon": {
+    "name": "Oberon",
+    "distanceFromEarth": "2.72 billion km (orbits Uranus)",
+    "temperature": "-203°C to -213°C",
+    "gravity": "0.035x Earth's gravity",
+    "type": "Icy Moon",
+    "funFact": "Oberon is named after the fairy king from Shakespeare's 'A Midsummer Night's Dream' and has a mysterious dark material covering parts of its crater floors!"
+  },
+  "Triton": {
+    "name": "Triton",
+    "distanceFromEarth": "4.35 billion km (orbits Neptune)",
+    "temperature": "-235°C to -213°C",
+    "gravity": "0.079x Earth's gravity",
+    "type": "Icy Moon",
+    "funFact": "Triton is the only large moon that orbits backwards around its planet and has nitrogen geysers that shoot 8 km high into its thin atmosphere!"
+  }
+}

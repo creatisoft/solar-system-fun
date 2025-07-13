@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solar System Simulation</title>
-    <link rel="icon" type="image/x-icon" href="/public/logo.png">
+    <link rel="icon" type="image/x-icon" href="/logo.png">
     <style>
         body { margin: 0; overflow: hidden; }
         canvas { display: block; }
@@ -105,6 +105,83 @@
             top: 0;
             left: 9px;
         }
+        
+        /* Planet Info Modal */
+        #planetModal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(40, 40, 80, 0.95));
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(15px);
+            font-family: 'Arial', sans-serif;
+            max-width: 500px;
+            min-width: 400px;
+            display: none;
+            z-index: 2000;
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.5);
+            padding-bottom: 15px;
+        }
+        
+        .planet-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 0;
+        }
+        
+        .modal-content {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .fact-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .fact-label {
+            font-weight: bold;
+            color: #87ceeb;
+            font-size: 16px;
+        }
+        
+        .fact-value {
+            color: #ffffff;
+            font-size: 16px;
+            text-align: right;
+            max-width: 60%;
+        }
+        
+        .fun-fact {
+            background: rgba(255, 215, 0, 0.1);
+            border-left: 4px solid #ffd700;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+        
+        .close-instruction {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
     </style>
 </head>
 <body>
@@ -130,12 +207,107 @@
         <div class="crosshair-line crosshair-horizontal"></div>
         <div class="crosshair-line crosshair-vertical"></div>
     </div>
+    
+    <!-- Planet Info Modal -->
+    <div id="planetModal">
+        <div class="modal-header">
+            <h2 class="planet-name" id="planetName">Planet Name</h2>
+        </div>
+        <div class="modal-content">
+            <div class="fact-row">
+                <span class="fact-label">Distance from Earth:</span>
+                <span class="fact-value" id="planetDistance">Loading...</span>
+            </div>
+            <div class="fact-row">
+                <span class="fact-label">Type:</span>
+                <span class="fact-value" id="planetType">Loading...</span>
+            </div>
+            <div class="fact-row">
+                <span class="fact-label">Temperature:</span>
+                <span class="fact-value" id="planetTemperature">Loading...</span>
+            </div>
+            <div class="fact-row">
+                <span class="fact-label">Gravity:</span>
+                <span class="fact-value" id="planetGravity">Loading...</span>
+            </div>
+            <div class="fun-fact" id="planetFunFact">
+                Loading interesting fact...
+            </div>
+        </div>
+        <div class="close-instruction">
+            Look away to close
+        </div>
+    </div>
     <script type="module">
         import * as THREE from 'three';
         import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
 
         const errorMessage = document.getElementById('errorMessage');
         const crosshair = document.getElementById('crosshair');
+
+        // Planet facts data
+        let planetFacts = {};
+        
+        // Load planet facts
+        async function loadPlanetFacts() {
+            try {
+                const response = await fetch('./planet-facts.json');
+                planetFacts = await response.json();
+            } catch (error) {
+                console.error('Failed to load planet facts:', error);
+                // Fallback data if JSON fails to load
+                planetFacts = {
+                    "Mercury": {
+                        "name": "Mercury",
+                        "distanceFromEarth": "77.3 million km",
+                        "temperature": "-173°C to 427°C",
+                        "gravity": "0.38x Earth's gravity",
+                        "funFact": "Mercury has no atmosphere and experiences extreme temperature swings!"
+                    }
+                    // Add more fallback data if needed
+                };
+            }
+        }
+        
+        // Modal elements
+        const planetModal = document.getElementById('planetModal');
+        const planetNameEl = document.getElementById('planetName');
+        const planetDistanceEl = document.getElementById('planetDistance');
+        const planetTypeEl = document.getElementById('planetType');
+        const planetTemperatureEl = document.getElementById('planetTemperature');
+        const planetGravityEl = document.getElementById('planetGravity');
+        const planetFunFactEl = document.getElementById('planetFunFact');
+        
+        let currentPlanetName = null;
+        let modalVisible = false;
+        let lookingAtPlanet = null;
+        let lookStartTime = 0;
+        
+        // Show planet modal
+        function showPlanetModal(planetName) {
+            if (planetFacts[planetName] && !modalVisible) {
+                const facts = planetFacts[planetName];
+                planetNameEl.textContent = facts.name;
+                planetDistanceEl.textContent = facts.distanceFromEarth;
+                planetTypeEl.textContent = facts.type;
+                planetTemperatureEl.textContent = facts.temperature;
+                planetGravityEl.textContent = facts.gravity;
+                planetFunFactEl.textContent = facts.funFact;
+                
+                planetModal.style.display = 'block';
+                modalVisible = true;
+                currentPlanetName = planetName;
+            }
+        }
+        
+        // Hide planet modal
+        function hidePlanetModal() {
+            planetModal.style.display = 'none';
+            modalVisible = false;
+            currentPlanetName = null;
+            lookingAtPlanet = null;
+            lookStartTime = 0;
+        }
 
         function startSimulation() {
                 // Scene setup
@@ -238,6 +410,11 @@
                         case 'KeyQ': moveUp = true; break;         // Q = up
                         case 'KeyE': moveDown = true; break;       // E = down
                         case 'ShiftLeft': isSprinting = true; break;
+                        case 'Escape': 
+                            if (modalVisible) {
+                                hidePlanetModal();
+                            }
+                            break;
                         case 'ArrowLeft':
                             speedMultiplier = Math.max(0, speedMultiplier - 0.2); // Step: 0.5
                             speedValue.textContent = speedMultiplier.toFixed(2); // Display two decimal places
@@ -428,6 +605,7 @@
                             const moonGeometry = new THREE.SphereGeometry(scaledMoonRadius, 32, 32);
                             const moonMaterial = new THREE.MeshPhongMaterial({ color: moon.color });
                             const moonMesh = new THREE.Mesh(moonGeometry, moonMaterial);
+                            moonMesh.name = moon.name; // Set mesh name for easy identification
                             
                             // Create moon's orbit ring
                             const moonOrbitGeometry = new THREE.RingGeometry(
@@ -572,19 +750,84 @@
                     // Update raycaster
                     raycaster.setFromCamera(center, camera);
                     
+                    // Gather all moon meshes for raycasting
+                    const allMoonMeshes = [];
+                    planetMeshes.forEach(planet => {
+                        if (planet.mesh.moons) {
+                            planet.mesh.moons.forEach(moon => {
+                                allMoonMeshes.push(moon.mesh);
+                            });
+                        }
+                    });
+                    
                     // Create array of objects to test
-                    const objectsToTest = [sun, ...planetMeshes.map(p => p.mesh)];
+                    const objectsToTest = [sun, ...planetMeshes.map(p => p.mesh), ...allMoonMeshes];
                     
                     // Get intersections
                     const intersects = raycaster.intersectObjects(objectsToTest, true);
                     
-                    // Check if any intersection is within our raycast distance
+                    // Check if any intersection is within our raycast distance and handle modal
                     let nearPlanet = false;
+                    let targetPlanetName = null;
+                    
                     if (intersects.length > 0) {
                         const firstIntersect = intersects[0];
                         if (firstIntersect.distance <= raycastDistance) {
                             nearPlanet = true;
+                            
+                            // Find which planet, moon, or sun is being looked at
+                            if (firstIntersect.object === sun) {
+                                targetPlanetName = 'Sun';
+                            } else {
+                                // Check for planet
+                                for (let planet of planetMeshes) {
+                                    if (firstIntersect.object === planet.mesh) {
+                                        targetPlanetName = planet.name;
+                                        break;
+                                    }
+                                }
+                                // Check for moon if not a planet
+                                if (!targetPlanetName) {
+                                    for (let planet of planetMeshes) {
+                                        if (planet.mesh.moons) {
+                                            for (let moon of planet.mesh.moons) {
+                                                if (firstIntersect.object === moon.mesh) {
+                                                    targetPlanetName = moon.mesh.name;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (targetPlanetName) break;
+                                    }
+                                }
+                            }
+                            
+                            // Handle modal display timing
+                            if (targetPlanetName) {
+                                if (lookingAtPlanet === targetPlanetName) {
+                                    // Still looking at the same planet, check if enough time has passed
+                                    if (time - lookStartTime > 500 && !modalVisible) { // 0.5 seconds
+                                        showPlanetModal(targetPlanetName);
+                                    }
+                                } else {
+                                    // Started looking at a new planet
+                                    lookingAtPlanet = targetPlanetName;
+                                    lookStartTime = time;
+                                    if (modalVisible && currentPlanetName !== targetPlanetName) {
+                                        hidePlanetModal();
+                                    }
+                                }
+                            }
                         }
+                    }
+                    
+                    // Hide modal if not looking at any planet
+                    if (!nearPlanet) {
+                        if (modalVisible) {
+                            hidePlanetModal();
+                        }
+                        lookingAtPlanet = null;
+                        lookStartTime = 0;
                     }
 
                     // Show/hide crosshair based on raycast
@@ -658,8 +901,10 @@
                     renderer.setSize(window.innerWidth, window.innerHeight);
                 });
             }
-        // Start the simulation immediately
-        startSimulation();
+        // Load planet facts and start simulation
+        loadPlanetFacts().then(() => {
+            startSimulation();
+        });
     </script>
     <!-- Simple Analytics - 100% privacy-first analytics -->
 <script async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
