@@ -5,7 +5,7 @@
     "temperature": "-173°C to 427°C",
     "gravity": "0.38x Earth's gravity",
     "type": "Terrestrial Planet",
-    "funFact": "Mercury has no atmosphere and experiences the most extreme temperature swings in the solar system - from freezing cold to hot enough to melt lead!"
+    "funFact": "Imagine a world with no atmosphere where one moment you're freezing solid and the next you're hot enough to melt a bucket of lead! Mercury has the most extreme temperature swings in the entire solar system."
   },
   "Venus": {
     "name": "Venus",
@@ -13,7 +13,7 @@
     "temperature": "462°C (surface)",
     "gravity": "0.91x Earth's gravity",
     "type": "Terrestrial Planet",
-    "funFact": "Venus rotates backwards compared to most planets and has days longer than its years - one day on Venus equals 243 Earth days!"
+    "funFact": "Talk about a slow day! On Venus, a single day lasts longer than an entire year. Plus, it spins backward, making it the rebellious oddball of our solar system."
   },
   "Earth": {
     "name": "Earth",
@@ -21,7 +21,7 @@
     "temperature": "-89°C to 58°C",
     "gravity": "1.0x Earth's gravity",
     "type": "Terrestrial Planet",
-    "funFact": "Earth is the only known planet with liquid water on its surface and the only place in the universe confirmed to harbor life!"
+    "funFact": "Earth is the ultimate oasis! It's the only place we know of in the entire universe that has liquid water on its surface, and the only confirmed home to life. Pretty special, huh?"
   },
   "Mars": {
     "name": "Mars",
@@ -29,7 +29,7 @@
     "temperature": "-87°C to -5°C",
     "gravity": "0.38x Earth's gravity",
     "type": "Terrestrial Planet",
-    "funFact": "Mars has the largest volcano in the solar system - Olympus Mons is three times taller than Mount Everest and as wide as Arizona!"
+    "funFact": "Mars is home to a true monster of a volcano! Olympus Mons is so massive it's three times taller than Mount Everest and could cover the entire state of Arizona."
   },
   "Jupiter": {
     "name": "Jupiter",
@@ -37,7 +37,7 @@
     "temperature": "-108°C (cloud tops)",
     "gravity": "2.36x Earth's gravity",
     "type": "Gas Giant",
-    "funFact": "Jupiter's Great Red Spot is a storm that has been raging for over 400 years and is large enough to fit three Earths inside it!"
+    "funFact": "Jupiter's most famous feature is a swirling storm called the Great Red Spot. It's been raging for over 400 years and is so huge that three Earths could fit inside it with room to spare!"
   },
   "Saturn": {
     "name": "Saturn",
@@ -45,7 +45,7 @@
     "temperature": "-139°C (cloud tops)",
     "gravity": "0.92x Earth's gravity",
     "type": "Gas Giant",
-    "funFact": "Saturn is less dense than water - if you could find a bathtub big enough, Saturn would actually float!"
+    "funFact": "Believe it or not, if you could find a bathtub big enough, Saturn would actually float! This gas giant is so light and fluffy it's less dense than water."
   },
   "Uranus": {
     "name": "Uranus",
@@ -53,7 +53,7 @@
     "temperature": "-197°C (cloud tops)",
     "gravity": "0.89x Earth's gravity",
     "type": "Ice Giant",
-    "funFact": "Uranus rotates on its side at a 98-degree angle, likely due to a massive collision billions of years ago - it literally rolls around the Sun!"
+    "funFact": "Uranus is a true maverick, rotating on its side like a rolling bowling ball! This 98-degree tilt makes it unique among all the planets, likely the result of a massive, ancient collision."
   },
   "Neptune": {
     "name": "Neptune",
@@ -61,7 +61,7 @@
     "temperature": "-201°C (cloud tops)",
     "gravity": "1.13x Earth's gravity",
     "type": "Ice Giant",
-    "funFact": "Neptune has winds reaching up to 2,100 km/h - the fastest in the solar system, despite being the farthest planet from the Sun!"
+    "funFact": "Don't let Neptune's distance fool you. This planet has the fastest winds in the solar system, howling at over 2,100 km/h. That's a storm you wouldn't want to get caught in!"
   },
   "Sun": {
     "name": "The Sun",
@@ -69,7 +69,7 @@
     "temperature": "5,778°C (surface), 15 million°C (core)",
     "gravity": "28x Earth's gravity",
     "type": "Main Sequence Star",
-    "funFact": "The Sun is so massive that it contains 99.86% of all the mass in our solar system, and every second it converts 4 million tons of matter into energy!"
+    "funFact": "Our Sun is a true powerhouse! It holds an astonishing 99.86% of the solar system's total mass and converts a mind-boggling 4 million tons of matter into energy every single second. Now that's a star!"
   },
   "Moon": {
     "name": "The Moon",
@@ -77,7 +77,7 @@
     "temperature": "-173°C to 127°C",
     "gravity": "0.165x Earth's gravity",
     "type": "Terrestrial Moon",
-    "funFact": "The Moon always shows the same face to Earth due to tidal locking, and it's slowly moving away from us at about 3.8 cm per year!"
+    "funFact": "Our Moon is playing a slow-motion game of hide-and-seek! It always shows us the same face, and it's slowly but surely moving away from Earth at about 3.8 centimeters every year."
   },
   "Phobos": {
     "name": "Phobos",
@@ -85,7 +85,7 @@
     "temperature": "-4°C to -112°C",
     "gravity": "0.0006x Earth's gravity",
     "type": "Rocky Asteroid Moon",
-    "funFact": "Phobos orbits Mars so fast that it rises in the west and sets in the east, completing three orbits in a single Martian day!"
+    "funFact": "Phobos is in a hurry! This little moon whips around Mars so fast that it rises in the west and sets in the east, completing three full orbits in just one Martian day."
   },
   "Deimos": {
     "name": "Deimos",
@@ -93,7 +93,7 @@
     "temperature": "-4°C to -112°C",
     "gravity": "0.0003x Earth's gravity",
     "type": "Rocky Asteroid Moon",
-    "funFact": "Deimos is so small and irregularly shaped that if you stood on it, you could literally throw a baseball into orbit around it!"
+    "funFact": "Deimos is so tiny that if you had a strong arm, you could throw a baseball and send it into orbit around the moon itself! It’s the ultimate zero-gravity home run."
   },
   "Io": {
     "name": "Io",
@@ -101,7 +101,7 @@
     "temperature": "-143°C to 1,800°C",
     "gravity": "0.18x Earth's gravity",
     "type": "Volcanic Moon",
-    "funFact": "Io is the most volcanically active body in the solar system, with over 400 active volcanoes that can shoot sulfur 500 km into space!"
+    "funFact": "Io is the ultimate volcanic hellscape! With over 400 active volcanoes, it's the most volcanically active place in our solar system. These volcanoes can even shoot sulfur plumes 500 kilometers high!"
   },
   "Europa": {
     "name": "Europa",
@@ -109,7 +109,7 @@
     "temperature": "-160°C to -220°C",
     "gravity": "0.134x Earth's gravity",
     "type": "Icy Moon",
-    "funFact": "Europa has a subsurface ocean that contains twice as much water as all of Earth's oceans combined, hidden beneath its icy crust!"
+    "funFact": "Beneath Europa's cracked, icy shell lies a massive secret: a subsurface ocean containing more than double the amount of water found in all of Earth's oceans combined! It's a prime target in the search for extraterrestrial life."
   },
   "Ganymede": {
     "name": "Ganymede",
@@ -117,7 +117,7 @@
     "temperature": "-180°C to -120°C",
     "gravity": "0.146x Earth's gravity",
     "type": "Icy Moon",
-    "funFact": "Ganymede is the largest moon in the solar system - bigger than Mercury - and has its own magnetic field and aurora!"
+    "funFact": "Ganymede is a true giant! It's the largest moon in our solar system—bigger than the planet Mercury—and it even has its own magnetic field and aurora, just like a planet."
   },
   "Callisto": {
     "name": "Callisto",
@@ -125,7 +125,7 @@
     "temperature": "-139°C to -108°C",
     "gravity": "0.126x Earth's gravity",
     "type": "Icy Moon",
-    "funFact": "Callisto is the most heavily cratered object in the solar system and may have a subsurface ocean beneath its ancient, battered surface!"
+    "funFact": "Callisto is the solar system's punching bag, covered in more craters than any other object! But beneath its scarred, ancient surface, scientists think there might be a hidden subsurface ocean."
   },
   "Titan": {
     "name": "Titan",
@@ -133,7 +133,7 @@
     "temperature": "-179°C to -170°C",
     "gravity": "0.14x Earth's gravity",
     "type": "Atmospheric Moon",
-    "funFact": "Titan has lakes and rivers of liquid methane and ethane, and its thick atmosphere would let you fly with just wings strapped to your arms!"
+    "funFact": "On Titan, the rivers and lakes are filled with liquid methane and ethane, not water! Its super-dense atmosphere is so thick that you could actually fly through it just by strapping some wings to your arms."
   },
   "Rhea": {
     "name": "Rhea",
@@ -141,7 +141,7 @@
     "temperature": "-174°C to -220°C",
     "gravity": "0.0264x Earth's gravity",
     "type": "Icy Moon",
-    "funFact": "Rhea may have its own ring system, making it potentially the first moon known to have rings around it!"
+    "funFact": "Could a moon have its own rings? Scientists think so! There's a strong possibility that Saturn's moon Rhea has a ring system, which would make it the first moon ever discovered with rings."
   },
   "Titania": {
     "name": "Titania",
@@ -149,7 +149,7 @@
     "temperature": "-203°C to -213°C",
     "gravity": "0.039x Earth's gravity",
     "type": "Icy Moon",
-    "funFact": "Titania is the largest moon of Uranus and has massive canyon systems that stretch for over 1,000 km across its surface!"
+    "funFact": "Uranus's largest moon, Titania, is a world of colossal canyons! Its surface is carved with massive fault systems that stretch for over 1,000 kilometers, creating a dramatic, fractured landscape."
   },
   "Oberon": {
     "name": "Oberon",
@@ -157,7 +157,7 @@
     "temperature": "-203°C to -213°C",
     "gravity": "0.035x Earth's gravity",
     "type": "Icy Moon",
-    "funFact": "Oberon is named after the fairy king from Shakespeare's 'A Midsummer Night's Dream' and has a mysterious dark material covering parts of its crater floors!"
+    "funFact": "Oberon is named after Shakespeare's fairy king, and this moon has a mystery all its own: a strange, dark material covers the floors of its craters, making for a truly otherworldly sight."
   },
   "Triton": {
     "name": "Triton",
@@ -165,6 +165,6 @@
     "temperature": "-235°C to -213°C",
     "gravity": "0.079x Earth's gravity",
     "type": "Icy Moon",
-    "funFact": "Triton is the only large moon that orbits backwards around its planet and has nitrogen geysers that shoot 8 km high into its thin atmosphere!"
+    "funFact": "Neptune's moon Triton is a true rebel, orbiting backward against its planet's rotation. It's also a world of icy wonders, with nitrogen geysers that erupt spectacularly, shooting plumes of gas 8 kilometers high!"
   }
 }
