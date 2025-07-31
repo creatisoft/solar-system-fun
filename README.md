@@ -64,12 +64,10 @@ The output will be in the `dist/` directory. You can deploy this folder to any s
 ---
 
 ## 🎨 Screenshots
+<img width="900" height="600" alt="ssfun1" src="https://github.com/user-attachments/assets/80bfe014-9152-4dd0-b246-7a4ef81d9d9d" />
 
-![Solar System Overview](https://via.placeholder.com/800x400)  
-*Explore the planets and moons in stunning 3D.*
+<img width="900" height="600" alt="ssfun2" src="https://github.com/user-attachments/assets/179a1702-d6cf-477f-b5d7-f5cbe23baf54" />
 
-![Planet Modal](https://via.placeholder.com/800x400)  
-*Learn fun facts about each celestial body.*
 
 ---
 
