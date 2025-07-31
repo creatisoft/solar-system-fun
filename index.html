@@ -216,6 +216,40 @@
             transform: translateY(0px);
             box-shadow: 0 2px 10px rgba(139, 92, 246, 0.3);
         }
+
+        /* GitHub Button */
+        #githubButton {
+            position: absolute;
+            bottom: 20px;
+            left: 150px;
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Arial', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        #githubButton:hover {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        #githubButton:active {
+            transform: translateY(0px);
+            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -245,6 +279,11 @@
     <!-- Donate Button -->
     <a id="donateButton" href="https://buy.stripe.com/cN23e25IQgeqbTy6oo" target="_blank">
         💜 Donate
+    </a>
+
+    <!-- GitHub Button -->
+    <a id="githubButton" href="" target="_blank">
+        ⭐ Star on GitHub
     </a>
     
     <!-- Planet Info Modal -->
